@@ -1,0 +1,84 @@
+<div class="mb-8">
+    <div class="file-path">📄 shop/templates/shop/product_detail.html</div>
+    <button onclick="copyToClipboard('product_detail_html')" class="copy-btn mb-4">📋 کپی کد</button>
+    
+    <div class="code-block" id="product_detail_html">
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ product.name }} - فروشگاه Django{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-12">
+<div class="md:flex">
+<!-- Product Image -->
+<div class="md:w-1/2">
+    <div class="h-96 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+        {% else %}
+            <span class="text-8xl">📦</span>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Product Info -->
+<div class="md:w-1/2 p-8">
+    <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
+    <p class="text-gray-600 mb-6">{{ product.description }}</p>
+    
+    <!-- Price -->
+    <div class="mb-6">
+        {% if product.has_discount %}
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <span class="text-2xl text-gray-500 line-through">{{ product.formatted_price }}</span>
+                <span class="text-4xl font-bold text-red-600">{{ product.formatted_discount_price }}</span>
+                <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-bold">
+                    تخفیف!
+                </span>
+            </div>
+        {% else %}
+            <span class="text-4xl font-bold text-purple-600">{{ product.formatted_price }}</span>
+        {% endif %}
+    </div>
+    
+    <!-- Stock Status -->
+    <div class="mb-6">
+        {% if product.stock > 0 %}
+            <span class="text-green-600 font-bold">✅ موجود ({{ product.stock }} عدد)</span>
+        {% else %}
+            <span class="text-red-600 font-bold">❌ ناموجود</span>
+        {% endif %}
+    </div>
+    
+    <!-- Add to Cart Form -->
+    {% if product.stock > 0 %}
+    <form method="POST" action="{% url 'add_to_cart' product.id %}" class="mb-6">
+        {% csrf_token %}
+        <div class="flex items-center space-x-4 space-x-reverse mb-4">
+            <label for="quantity" class="font-bold">تعداد:</label>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" 
+                   class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+        </div>
+        <button type="submit" class="w-full bg-purple-600 text-white py-4 rounded-lg text-lg font-bold hover:bg-purple-700 transition duration-300">
+            🛒 افزودن به سبد خرید
+        </button>
+    </form>
+    {% endif %}
+    
+    <!-- Product Meta -->
+    <div class="border-t pt-6">
+        <p class="text-gray-600">
+            <strong>دسته‌بندی:</strong> 
+            <a href="{% url 'products_by_category' product.category.slug %}" class="text-purple-600 hover:underline">
+                {{ product.category.name }}
+            </a>
+        </p>
+    </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+    </div>
+</div>

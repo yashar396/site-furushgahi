@@ -1,0 +1,95 @@
+<div class="code-block" id="cart_detail_html">
+    {% extends 'shop/base.html' %}
+    
+    {% block title %}سبد خرید - فروشگاه Django{% endblock %}
+    
+    {% block content %}
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">سبد خرید شما</h1>
+        
+        {% if cart_items %}
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="divide-y divide-gray-200">
+                {% for item in cart_items %}
+                <div class="p-6 flex items-center space-x-6 space-x-reverse">
+                    <!-- Product Image -->
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-cover rounded-lg">
+                        {% else %}
+                            <span class="text-2xl">📦</span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold">{{ item.product.name }}</h3>
+                        <p class="text-gray-600">{{ item.product.category.name }}</p>
+                        <p class="text-purple-600 font-bold">{{ item.product.formatted_price }}</p>
+                    </div>
+                    
+                    <!-- Quantity Update -->
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <form method="POST" action="{% url 'update_cart_item' item.id %}" class="flex items-center space-x-2 space-x-reverse">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" 
+                                   class="w-16 px-2 py-1 border border-gray-300 rounded text-center">
+                            <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-300">
+                                بروزرسانی
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Total Price -->
+                    <div class="text-left">
+                        <p class="text-xl font-bold">{{ item.formatted_total_price }}</p>
+                    </div>
+                    
+                    <!-- Remove Button -->
+                    <div>
+                        <a href="{% url 'remove_from_cart' item.id %}" 
+                           class="text-red-600 hover:text-red-800 transition duration-300"
+                           onclick="return confirm('آیا مطمئن هستید؟')">
+                            🗑️
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Cart Summary -->
+            <div class="bg-gray-50 p-6 border-t">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xl font-bold">مجموع:</span>
+                    <span class="text-2xl font-bold text-purple-600">{{ cart.total_price|floatformat:0 }} تومان</span>
+                </div>
+                
+                <div class="flex space-x-4 space-x-reverse">
+                    <a href="{% url 'clear_cart' %}" 
+                       class="flex-1 bg-red-600 text-white text-center py-3 rounded-lg hover:bg-red-700 transition duration-300"
+                       onclick="return confirm('آیا مطمئن هستید؟')">
+                        پاک کردن سبد خرید
+                    </a>
+                    <button class="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                        ادامه خرید
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        {% else %}
+        <!-- Empty Cart -->
+        <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+            <div class="text-8xl mb-6">🛒</div>
+            <h2 class="text-2xl font-bold text-gray-600 mb-4">سبد خرید شما خالی است</h2>
+            <p class="text-gray-500 mb-8">هنوز محصولی به سبد خرید اضافه نکرده‌اید.</p>
+            <a href="{% url 'product_list' %}" class="bg-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-purple-700 transition duration-300">
+                مشاهده محصولات
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+                    </div>
+                </div>
+            </div>

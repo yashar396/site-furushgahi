@@ -1,0 +1,73 @@
+<div class="mb-8">
+    
+    
+    <div class="code-block" id="base_html">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}فروشگاه Django{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Vazir', sans-serif; }
+.gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+</style>
+</head>
+<body class="bg-gray-50">
+<!-- Header -->
+<header class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+<div class="container mx-auto px-6 py-4">
+<div class="flex justify-between items-center">
+    <div class="flex items-center space-x-4 space-x-reverse">
+        <div class="text-3xl">🛍️</div>
+        <h1 class="text-2xl font-bold">
+            <a href="{% url 'home' %}">فروشگاه Django</a>
+        </h1>
+    </div>
+    <nav class="hidden md:flex space-x-8 space-x-reverse">
+        <a href="{% url 'home' %}" class="hover:text-purple-200 transition duration-300">خانه</a>
+        <a href="{% url 'product_list' %}" class="hover:text-purple-200 transition duration-300">محصولات</a>
+        <a href="{% url 'cart_detail' %}" class="hover:text-purple-200 transition duration-300">سبد خرید</a>
+    </nav>
+    <div class="flex items-center space-x-4 space-x-reverse">
+        <a href="{% url 'cart_detail' %}" class="relative bg-white/20 p-3 rounded-full hover:bg-white/30 transition duration-300">
+            <span class="text-xl">🛒</span>
+        </a>
+    </div>
+</div>
+</div>
+</header>
+
+<!-- Messages -->
+{% if messages %}
+<div class="container mx-auto px-6 py-4">
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }} bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        {{ message }}
+    </div>
+{% endfor %}
+</div>
+{% endif %}
+
+<!-- Main Content -->
+<main class="container mx-auto px-6 py-8">
+{% block content %}
+{% endblock %}
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-12 mt-16">
+<div class="container mx-auto px-6 text-center">
+<div class="flex justify-center items-center mb-6">
+    <span class="text-3xl ml-4">🛍️</span>
+    <h3 class="text-2xl font-bold">فروشگاه Django</h3>
+</div>
+<p class="text-gray-400">&copy; ۱۴۰۳ فروشگاه Django. تمامی حقوق محفوظ است.</p>
+</div>
+</footer>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972a70fdc0353800',t:'MTc1NTc4MjU2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+    </div>
+</div>
